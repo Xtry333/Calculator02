@@ -10,7 +10,7 @@ namespace Calculator02
     {
         static void Main(string[] args)
         {
-
+             
         }
     }
 }
