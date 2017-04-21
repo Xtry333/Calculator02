@@ -7,35 +7,42 @@ namespace Calculator02
 {
     class Program
     {
+        static void printList(CustomList l)
+        {
+            Console.WriteLine("#: " + l.Length + "; {" + l + "}");
+        }
         static void Main()
         {
             CustomList aList = new CustomList();
 
-            Console.WriteLine("#: {1}: {0}", aList, aList.Length);
+            printList(aList);
 
-            aList.dodajNaPoczatek(new Node(1));
-            aList.dodajNaPoczatek(new Node(2));
-            aList.dodajNaPoczatek(new Node(3));
-            aList.dodajNaPoczatek(new Node(4));
-            aList.AddFirst(8);
-            aList.AddFirst(14);
-            aList.AddFirst(55);
-            aList.AddFirst(32);
-            aList.AddFirst(15);
+            aList.Add("1");
+            aList.Add("2");
+            aList.Add("3");
+            aList.Add("4");
+            aList.Add("5");
+            aList.Add("6");
+            aList.Add("7");
+            aList.Add("8");
+            aList.Add("9");
+            aList.Add("10");
+            aList.AddFirst("11");
+            aList.AddFirst("12");
+            aList.AddFirst("13");
+            aList.AddFirst("14");
+            aList.AddFirst("15");
 
-            aList.Add(69);
-            aList.Add(70);
-            aList.Add(71);
-            aList.Add(72);
 
-            Console.WriteLine("li[8]: " + aList[8]);
-            aList[8] = 5;
-            Console.WriteLine("#: {1}: {0}", aList, aList.Length);
-            aList.RemoveAt(7);
-            Console.WriteLine("li[0]: " + aList[0]);
-            Console.WriteLine("#: {1}: {0}", aList, aList.Length);
+            //Console.WriteLine("li[8]: " + aList[8]);
+            //aList[8] = 5;
+            //printList(aList);
+            //aList.RemoveAt(7);
+            //Console.WriteLine("li[0]: " + aList[0]);
+            //printList(aList);
 
             //lista.usunGlowe();
+            printList(aList);
             Console.ReadKey();
         }
     }

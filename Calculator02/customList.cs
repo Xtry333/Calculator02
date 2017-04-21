@@ -7,10 +7,10 @@ namespace Calculator02
 {
     public class Node
     {
-        public int value;
+        public string value;
         public Node nextNode;
 
-        public Node(int v)
+        public Node(string v)
         {
             this.value = v;
             this.nextNode = null;
@@ -33,16 +33,8 @@ namespace Calculator02
     {
         public Node head = null;
         public Node tail = null;
-        //public Node lastNode = null;
-
-        public void dodajNaPoczatek(Node node)
-        {
-            node.nextNode = head;
-            tail = head;
-            head = node;
-        }
-
-        public void AddFirst(int v)
+        
+        public void AddFirst(string v)
         {
             Node node = new Node(v);
             node.nextNode = head;
@@ -50,23 +42,30 @@ namespace Calculator02
             head = node;
         }
 
-        public void Add(int v)
+        public void Add(string v)
         {
             Node node = new Node(v);
-            Node lastNode = head;
-            Node prevNode = null;
-            //node.nextNode = null;
-            //Console.WriteLine("Head: " + head);
-            while(lastNode != null)
+            if (head == null)
             {
-                prevNode = lastNode;
-                lastNode = lastNode.nextNode;
+                head = node;
+            } else {
+                lastNode.nextNode = node;
             }
-            //Console.WriteLine("LastNode: " + prevNode);
-            prevNode.nextNode = node;
-            //Console.WriteLine("Head: " + head);
-            //tail = head;
-            //head = node;
+        }
+
+        public Node lastNode
+        {           
+            get
+            {
+                Node last = head;
+                Node node = head;
+                while (node != null)
+                {
+                    last = node;
+                    node = node.nextNode;
+                }
+                return last;
+            }
         }
 
         public void usunGlowe()
@@ -99,7 +98,7 @@ namespace Calculator02
             return head.ToString();
         }
 
-        public int this[int index]
+        public string this[int index]
         {
             get
             {
@@ -111,7 +110,7 @@ namespace Calculator02
                     tail = tail.nextNode;
                 }
                 if (index == 0) return tail.value;
-                return 0;
+                return "";
             }
             set
             {
