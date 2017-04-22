@@ -93,13 +93,17 @@ namespace CustomStringList
 
         public void Reverse()
         {
-            CustomList copy = new CustomList();
-            int count = this.Count;
-            for (int i = 0; i < count; i++)
+            Node node = firstNode, n = null;
+            while (node != null)
             {
-                copy.Push(this.Pop());
+                Node tmp = node.nextNode;
+                node.nextNode = n;
+                n = node;
+                node = tmp;
             }
-            firstNode = copy.firstNode;
+            firstNode = n;
+            tail = firstNode.nextNode;
+
         }
 
         public override string ToString()
@@ -156,6 +160,7 @@ namespace CustomStringList
                 }
                 node.nextNode = node.nextNode.nextNode;
             }
+            Console.WriteLine("Count: " + Count);
         }
 
     }
