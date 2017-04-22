@@ -12,27 +12,15 @@ namespace Calculator02
         {
             Console.WriteLine("#: " + l.Count + "; {" + l + "}");
         }
+
         static void Main()
         {
             CustomList aList = new CustomList();
+            string input = "";
+            bool quit = false;
 
             printList(aList);
-
-            /*aList.Add("1");
-            aList.Add("2");
-            aList.Add("3");
-            aList.Add("4");
-            aList.Add("5");
-            aList.Add("6");
-            aList.Add("7");
-            aList.Add("8");
-            aList.Add("9");
-            aList.Add("10");
-            aList.Push("11");
-            aList.Push("12");
-            aList.Push("13");
-            aList.Push("14");
-            aList.Push("15");*/
+            
             for(int i = 1; i <= 20; i++)
             {
                 if (i <= 10)
@@ -55,14 +43,6 @@ namespace Calculator02
             printList(aList);
             aList.RemoveAt(2);
             printList(aList);
-            //Console.WriteLine("li[8]: " + aList[8]);
-            //aList[8] = 5;
-            //printList(aList);
-            //aList.RemoveAt(7);
-            //Console.WriteLine("li[0]: " + aList[0]);
-            //printList(aList);
-
-            //lista.usunGlowe();
 
             for (int i = 0; i < 20; i++)
             {
@@ -75,7 +55,13 @@ namespace Calculator02
             printList(aList);
             aList.Reverse();
             printList(aList);
-            Console.ReadKey();
+            while (!quit)
+            {
+                input = Console.ReadLine();
+                if (input.Trim(' ') == "") quit = true;
+                Console.WriteLine(input);
+            }
+            Console.WriteLine("Exiting...");
         }
     }
 }
