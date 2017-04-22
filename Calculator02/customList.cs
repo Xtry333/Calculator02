@@ -72,7 +72,7 @@ namespace CustomStringList
         }
 
         public Node lastNode
-        {           
+        {
             get
             {
                 Node last = firstNode;
@@ -86,16 +86,6 @@ namespace CustomStringList
             }
         }
 
-        public void usunGlowe()
-        {
-            if (firstNode != null)
-            {
-                firstNode = tail;
-                if (tail != null)
-                    tail = tail.nextNode;
-            }
-        }
-
         public int Count
         {
             get { return (firstNode == null ? 0 : firstNode.Count); }
@@ -103,17 +93,13 @@ namespace CustomStringList
 
         public void Reverse()
         {
-            //Console.WriteLine("Operation reverse BEGIN");
             CustomList copy = new CustomList();
             int count = this.Count;
             for (int i = 0; i < count; i++)
             {
-                //Console.WriteLine("Old: " + this);
                 copy.Push(this.Pop());
-                //Console.WriteLine("Copy: " + copy);
             }
             firstNode = copy.firstNode;
-            //Console.WriteLine("Operation reverse END");
         }
 
         public override string ToString()
@@ -151,6 +137,7 @@ namespace CustomStringList
 
         public void RemoveAt(int index)
         {
+            if (index >= this.Count) throw new Exception("Index out of bounds");
             if (index == 0)
             {
                 if (firstNode != null)
@@ -159,16 +146,16 @@ namespace CustomStringList
                     if (tail != null)
                         tail = tail.nextNode;
                 }
-            }
-            if (index >= this.Count) throw new Exception("Index out of bounds");
-            index--;
-            Node node = firstNode;
-            while (index > 0)
-            {
+            } else {
                 index--;
-                node = node.nextNode;
+                Node node = firstNode;
+                while (index > 0)
+                {
+                    index--;
+                    node = node.nextNode;
+                }
+                node.nextNode = node.nextNode.nextNode;
             }
-            node.nextNode = node.nextNode.nextNode;
         }
 
     }

@@ -51,7 +51,10 @@ namespace Calculator02
             printList(aList);
             //aList.Reverse();
             printList(aList);
+            aList.RemoveAt(0);
+            printList(aList);
             aList.RemoveAt(2);
+            printList(aList);
             //Console.WriteLine("li[8]: " + aList[8]);
             //aList[8] = 5;
             //printList(aList);
