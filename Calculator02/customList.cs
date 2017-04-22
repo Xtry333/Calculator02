@@ -33,7 +33,22 @@ namespace CustomStringList
     {
         public Node firstNode = null;
         public Node tail = null;
-        
+
+        public Node lastNode
+        {
+            get
+            {
+                Node last = firstNode;
+                Node node = firstNode;
+                while (node != null)
+                {
+                    last = node;
+                    node = node.nextNode;
+                }
+                return last;
+            }
+        }
+
         public void Push(string v)
         {
             Node node = new Node(v);
@@ -70,22 +85,7 @@ namespace CustomStringList
                 lastNode.nextNode = node;
             }
         }
-
-        public Node lastNode
-        {
-            get
-            {
-                Node last = firstNode;
-                Node node = firstNode;
-                while (node != null)
-                {
-                    last = node;
-                    node = node.nextNode;
-                }
-                return last;
-            }
-        }
-
+        
         public int Count
         {
             get { return (firstNode == null ? 0 : firstNode.Count); }
@@ -112,7 +112,7 @@ namespace CustomStringList
         {
             get
             {
-                if (index >= this.Count) throw new Exception("Index out of bounds");
+                if (index >= this.Count) throw new System.IndexOutOfRangeException();
                 Node node = firstNode;
                 while (index > 0)
                 {
@@ -124,7 +124,7 @@ namespace CustomStringList
             }
             set
             {
-                if (index >= this.Count) throw new Exception("Index out of bounds");
+                if (index >= this.Count) throw new System.IndexOutOfRangeException();
                 Node node = firstNode;
                 while (index > 0)
                 {
@@ -137,7 +137,7 @@ namespace CustomStringList
 
         public void RemoveAt(int index)
         {
-            if (index >= this.Count) throw new Exception("Index out of bounds");
+            if (index >= this.Count) throw new System.IndexOutOfRangeException();
             if (index == 0)
             {
                 if (firstNode != null)
