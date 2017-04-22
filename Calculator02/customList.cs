@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calculator02
+namespace CustomStringList
 {
     public class Node
     {
@@ -16,9 +16,9 @@ namespace Calculator02
             this.nextNode = null;
         }
 
-        public int Length
+        public int Count
         {
-            get { return (nextNode == null ? 1 : 1 + nextNode.Length); }
+            get { return (nextNode == null ? 1 : 1 + nextNode.Count); }
         }
 
         public override string ToString()
@@ -31,23 +31,41 @@ namespace Calculator02
 
     public class CustomList
     {
-        public Node head = null;
+        public Node firstNode = null;
         public Node tail = null;
         
-        public void AddFirst(string v)
+        public void Push(string v)
         {
             Node node = new Node(v);
-            node.nextNode = head;
-            tail = head;
-            head = node;
+            node.nextNode = firstNode;
+            tail = firstNode;
+            firstNode = node;
+        }
+
+        public string Pop()
+        {
+            string retVal = "NULL";
+            if (firstNode != null)
+            {
+                retVal = firstNode.value;
+                firstNode = tail;
+                if (tail != null)
+                    tail = tail.nextNode;
+            }
+            return retVal;
+        }
+
+        public string Peek()
+        {
+            return (firstNode == null ? "NULL" : firstNode.value);
         }
 
         public void Add(string v)
         {
             Node node = new Node(v);
-            if (head == null)
+            if (firstNode == null)
             {
-                head = node;
+                firstNode = node;
             } else {
                 lastNode.nextNode = node;
             }
@@ -57,8 +75,8 @@ namespace Calculator02
         {           
             get
             {
-                Node last = head;
-                Node node = head;
+                Node last = firstNode;
+                Node node = firstNode;
                 while (node != null)
                 {
                     last = node;
@@ -70,73 +88,87 @@ namespace Calculator02
 
         public void usunGlowe()
         {
-            if (head != null)
+            if (firstNode != null)
             {
-                head = tail;
+                firstNode = tail;
                 if (tail != null)
                     tail = tail.nextNode;
             }
         }
 
-        public void deleteSecond()
+        public int Count
         {
-            if (head != null)
-            {
-                if (head.nextNode != null)
-                    head.nextNode = head.nextNode.nextNode;
-            }
+            get { return (firstNode == null ? 0 : firstNode.Count); }
         }
 
-        public int Length
+        public void Reverse()
         {
-            get { return (head == null ? 0 : head.Length); }
+            //Console.WriteLine("Operation reverse BEGIN");
+            CustomList copy = new CustomList();
+            int count = this.Count;
+            for (int i = 0; i < count; i++)
+            {
+                //Console.WriteLine("Old: " + this);
+                copy.Push(this.Pop());
+                //Console.WriteLine("Copy: " + copy);
+            }
+            firstNode = copy.firstNode;
+            //Console.WriteLine("Operation reverse END");
         }
 
         public override string ToString()
         {
-            if (head == null) return "NULL";
-            return head.ToString();
+            if (firstNode == null) return "NULL";
+            return firstNode.ToString();
         }
 
         public string this[int index]
         {
             get
             {
-                if (index >= this.Length) throw new Exception("Index out of bounds");
-                tail = head;
+                if (index >= this.Count) throw new Exception("Index out of bounds");
+                Node node = firstNode;
                 while (index > 0)
                 {
                     index--;
-                    tail = tail.nextNode;
+                    node = node.nextNode;
                 }
-                if (index == 0) return tail.value;
+                if (index == 0) return node.value;
                 return "";
             }
             set
             {
-                if (index >= this.Length) throw new Exception("Index out of bounds");
-                tail = head;
+                if (index >= this.Count) throw new Exception("Index out of bounds");
+                Node node = firstNode;
                 while (index > 0)
                 {
                     index--;
-                    tail = tail.nextNode;
+                    node = node.nextNode;
                 }
-                if (index == 0) tail.value = value;
+                if (index == 0) node.value = value;
             }
         }
 
         public void RemoveAt(int index)
         {
-            if (index == 0) usunGlowe();
-            if (index >= this.Length) throw new Exception("Index out of bounds");
+            if (index == 0)
+            {
+                if (firstNode != null)
+                {
+                    firstNode = tail;
+                    if (tail != null)
+                        tail = tail.nextNode;
+                }
+            }
+            if (index >= this.Count) throw new Exception("Index out of bounds");
             index--;
-            tail = head;
+            Node node = firstNode;
             while (index > 0)
             {
                 index--;
-                tail = tail.nextNode;
+                node = node.nextNode;
             }
-            tail.nextNode = tail.nextNode.nextNode;
+            node.nextNode = node.nextNode.nextNode;
         }
 
     }
