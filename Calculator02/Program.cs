@@ -71,7 +71,8 @@ namespace Calculator02
                     Console.Write("Input <empty to exit>: ");
                 input = Console.ReadLine();
                 Console.Clear();
-
+                
+                // Just testing input...
                 //input = "3+4*2/(10-5)^2";
                 //input = "5*4-3+2-1*3/8*7+3";
                 //input = "5*(2-1)*2";
@@ -81,43 +82,7 @@ namespace Calculator02
                 if (input.Trim() == "") quit = true;
                 if (input.Trim() == "d") infoDebug = !infoDebug;
                 Console.WriteLine("Raw input: " + input);
-
                 
-
-
-                //input = Regex.Replace(input, @"(?<=\d)(?=\()|(?<=\))(?=\d)|(?<=\))(?=\()", "*"); // Inserting multiplication
-                //Console.WriteLine("RegExp step #1: " + input);
-                //input = Regex.Replace(input, @"(?<number>\d+(\.\d+)?)", " ${number} "); // Encasing numbers
-                //Console.WriteLine("RegExp step #2: " + input);
-                //input = Regex.Replace(input, @"(?<ops>[+\-*/^()])", " ${ops} "); // Encasing tokens: + - * / ^ ( )
-                //Console.WriteLine("RegExp step #3: " + input);
-                //input = Regex.Replace(input, @"\s+", " ").Trim(); // Trim spaces
-                //Console.WriteLine("RegExp step #4: " + input);
-                //input = Regex.Replace(input, @"(- -)", "+"); // Minus and minus equals plus
-                //Console.WriteLine("RegExp step #5: " + input);
-                //input = Regex.Replace(input, @"((^-)|((?<=\( )-(?= [\d\(]))|((?<=[\-\(] )-(?= [\d\-\(]))|(?<=[/*] )-)", "~"); // Unary Minus
-                //Console.WriteLine("RegExp step #5: " + input);
-                //input = Regex.Replace(input, @"((?<=[+\-*/^()] )- (?=(\d*\.)?\d+))|(-(?= \())|(^\- )", "-");
-                //Console.WriteLine("RegExp step #5: " + input);
-                //input = Regex.Replace(input, @"(?<=\d )- (?=\d)", "+ -");
-                //Console.WriteLine("RegExp step #6: " + input);
-                //input = Regex.Replace(input, @"(- \()", "-1 * (");
-                //Console.WriteLine("RegExp step #7: " + input);
-                //input = Regex.Replace(input, @"(-(?=[(e)(pi)(sin)]))", "-1 * ");
-                //Console.WriteLine("RegExp step #8: " + input);
-                //Console.WriteLine("RegExp step #4: " + input);
-                //input = Regex.Replace(input, @"(?<var>(- \())", " ( 0 ${var} ) ");
-                //Console.WriteLine("RegExp step #5: " + input);
-
-                // Step 1.
-                //input = Regex.Replace(input, "-", "MINUS");
-                //Console.WriteLine("RegExp step #4: " + input);
-                // Step 2. Looking for pi or e or generic number \d+(\.\d+)?
-                //input = Regex.Replace(input, @"(?<number>(pi|e|(\d+(\.\d+)?)))\s+MINUS", "${number} -");
-                //Console.WriteLine("RegExp step #5: " + input);
-                // Step 3. Use the tilde ~ as the unary minus operator
-                //input = Regex.Replace(input, "MINUS", "~");
-                //Console.WriteLine("RegExp step #6: " + input);
 
                 input = RPNFormatString(input);
 
@@ -214,8 +179,6 @@ namespace Calculator02
                                     {
                                         cToken = operatorStack.Peek();
                                     } else {
-                                        // If the stack runs out without finding a left parenthesis,
-                                        // then there are mismatched parentheses.
                                         RPNDebugLog("Unbalanced parenthesis.", 1);
                                     }
                                 }
