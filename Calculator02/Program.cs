@@ -25,7 +25,7 @@ namespace Calculator02
 
         static void printList(CustomList l)
         {
-            Console.WriteLine("#: " + l.Count + "; {" + l + "}");
+            Console.WriteLine("#: " + l.Count + ";  {" + l + "}");
         }
 
         static double RPNMathf(string name, string number)
