@@ -32,8 +32,7 @@ namespace Calculator02
         {
             return 0;
         }
-
-
+        
         static string RPNFormatString(string str)
         {
             int p = 0;
