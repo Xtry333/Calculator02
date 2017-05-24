@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -28,6 +28,12 @@ namespace Calculator02
             Console.WriteLine("#: " + l.Count + "; {" + l + "}");
         }
 
+        static double RPNMathf(string name, string number)
+        {
+            return 0;
+        }
+
+
         static string RPNFormatString(string str)
         {
             int p = 0;
@@ -45,7 +51,7 @@ namespace Calculator02
             RPNDebugLog(str);
             str = Regex.Replace(str, @"(?<number>\d+(\.\d+)?)", " ${number} "); // Encasing numbers in spaces
             RPNDebugLog(str);
-            str = Regex.Replace(str, @"(?<token>[+\-*/^()])", " ${token} "); // Encasing operators in spaces
+            str = Regex.Replace(str, @"(?<token>[+\-*/^()%])", " ${token} "); // Encasing operators in spaces
             RPNDebugLog(str);
             str = Regex.Replace(str, @"\s+", " ").Trim(); // Trim any additional spaces
             RPNDebugLog(str);
@@ -60,7 +66,7 @@ namespace Calculator02
             bool quit = false;
             bool infoDebug = true;
 
-            Console.ForegroundColor = ConsoleColor.Red;
+            //Console.ForegroundColor = ConsoleColor.Red;
             
             while (!quit)
             {
@@ -71,18 +77,22 @@ namespace Calculator02
                     Console.Write("Input <empty to exit>: ");
                 input = Console.ReadLine();
                 Console.Clear();
-                
-                // Just testing input...
-                //input = "3+4*2/(10-5)^2";
-                //input = "5*4-3+2-1*3/8*7+3";
-                //input = "5*(2-1)*2";
-                //input = "((10 + (20 * 30)) - ( - 15))";
-                //input = "-((-10+14*-14)/-10)-10";
 
                 if (input.Trim() == "") quit = true;
                 if (input.Trim() == "d") infoDebug = !infoDebug;
-                Console.WriteLine("Raw input: " + input);
+                switch (input.Trim())
+                {
+                    case "1": input = "2+2*2"; break; // = 6 
+                    case "2": input = "2^5+4-5/2^4"; break; // = 35.6875
+                    case "3": input = "((2.3^5.4+4.1)-(50/2^4))^2"; break; // = 8242.12717522
+                    case "4": input = "(10.5*(2.5-1/2)*2+5)^0.5"; break; // = 6.8556546004
+                    case "5": input = "-(-(-(-(-(-(-10))))))"; break; // = -10
+                    case "6": input = "10%3-2"; break; // = -1
+                    case "7": input = input = "(2*10)%6"; break; // = 2
+                    case "8": input = "-((-10)+5)/-5"; break; // = -1
+                }
                 
+                Console.WriteLine("Raw input: " + input);
 
                 input = RPNFormatString(input);
 
@@ -112,7 +122,7 @@ namespace Calculator02
                             if (operatorStack.Count > 0)
                             {
                                 cToken = operatorStack.Peek();
-                                while (cToken == "+" || cToken == "-" || cToken == "*" || cToken == "/" || cToken == "^") // While there is an operator at the top
+                                while (cToken == "+" || cToken == "-" || cToken == "*" || cToken == "/" || cToken == "^" || cToken == "%") // While there is an operator at the top
                                 {                                    
                                     outputQueue.Add(operatorStack.Pop()); // pop it off the stack, onto the output queue
                                     if (operatorStack.Count > 0) // if there is more
@@ -127,12 +137,12 @@ namespace Calculator02
                             if (infoDebug)
                                 Console.WriteLine("\tPushed #1 (" + s + ")");
                         }
-                        if (s == "*" || s == "/")
+                        if (s == "*" || s == "/" || s == "%")
                         {
                             if (operatorStack.Count > 0)
                             {
                                 cToken = operatorStack.Peek();
-                                while (cToken == "*" || cToken == "/" || cToken == "^") // While there is an operator at the top, that has higher priority than plus and minus
+                                while (cToken == "*" || cToken == "/" || cToken == "^" || cToken == "%") // While there is an operator at the top, that has higher priority than plus and minus
                                 {
                                     outputQueue.Add(operatorStack.Pop()); // pop it off the stack, onto the output queue
                                     if (operatorStack.Count > 0) // if there is more
@@ -159,7 +169,7 @@ namespace Calculator02
                             if (infoDebug)
                                 Console.WriteLine("\tPushed #4(" + s + ")");
                         }
-                        if (s == "sin" || s == "cos" || s == "tan")
+                        if (s == "sin" || s == "cos" || s == "tan" || s == "add")
                         {
                             operatorStack.Push(s);
                             if (infoDebug)
@@ -179,6 +189,8 @@ namespace Calculator02
                                     {
                                         cToken = operatorStack.Peek();
                                     } else {
+                                        // If the stack runs out without finding a left parenthesis,
+                                        // then there are mismatched parentheses.
                                         RPNDebugLog("Unbalanced parenthesis.", 1);
                                     }
                                 }
@@ -217,8 +229,6 @@ namespace Calculator02
                 printList(outputQueue);
                 Console.WriteLine(" ");
 
-                //Console.ReadKey();
-
                 CustomList result = new CustomList();
                 double val1 = 0.0, val2 = 0.0;
 
@@ -229,9 +239,7 @@ namespace Calculator02
 
                 for (int i = 0; i < outputQueue.Count; i++) // While there are input tokens left
                 {
-                    // Read the next token from input.
                     string str = outputQueue[i];
-                    //Console.WriteLine("String: " + str);
                     switch (str)
                     {                        
                         case "+":
@@ -271,6 +279,18 @@ namespace Calculator02
                                 double.TryParse(result.Pop(), out val2);
                                 result.Push((val2 / val1).ToString());
                             } else {
+                                RPNDebugLog("Evaluation error.", 1);
+                            }
+                            break;
+                        case "%":
+                            if (result.Count >= 2)
+                            {
+                                double.TryParse(result.Pop(), out val1);
+                                double.TryParse(result.Pop(), out val2);
+                                result.Push((val2 % val1).ToString());
+                            }
+                            else
+                            {
                                 RPNDebugLog("Evaluation error.", 1);
                             }
                             break;
@@ -330,7 +350,6 @@ namespace Calculator02
                             }
                             break;
                         default:
-                            // If the token is a number
                             double val = 0.0;
                             double.TryParse(str, out val);
                             result.Push(val.ToString());
